@@ -1,11 +1,26 @@
 import React, { useState } from 'react'
 import { MDBContainer, MDBCard, MDBCardTitle, MDBCardBody, MDBCardFooter, MDBInput, MDBBtn, MDBTypography } from 'mdb-react-ui-kit'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 
 export const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState ()
+    const navigate = useNavigate()
+    const {login} = useAuth()
+
+    const handleSubmit = async(e) => {
+        e.preventdefault()
+        setError()
+
+        await login(email, password).then((res) => {
+            navigate('/')
+        }).catch((err) => {
+            setError(err.toString())
+        })
+    }
 
 return (    
     <MDBContainer className='d-flex align-items-center justify-content-center' >
@@ -19,8 +34,15 @@ return (
                     Login
                 </strong>
             </MDBCardTitle>
+            {
+                error && <MDBTypography className='ms-4 me-4' note noteColor='danger'>
+                    <strong>
+                        Error:
+                    </strong>{error}
+                </MDBTypography>
+            }
             <MDBCardBody>
-                <form>
+                <form onSubmit={handleSubmit}>
                 <MDBInput 
                     value={email}
                         onChange = {(e) => setEmail(e.target.value)}

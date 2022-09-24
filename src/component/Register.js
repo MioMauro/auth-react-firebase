@@ -1,14 +1,33 @@
 import React, { useState } from 'react'
 import { MDBContainer, MDBCard, MDBCardTitle, MDBCardBody, MDBCardFooter, MDBInput, MDBBtn, MDBTypography } from 'mdb-react-ui-kit'
-import { Link } from 'react-router-dom'
+import { Await, Link, Navigate, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 
 export const Register = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confPass, setConfPass] = useState('')
+    const [error, setError] = useState ()
+    const navigate = useNavigate()
 
-    
+    const {register} = useAuth()
+
+    const handleSubmit = async(e) => {
+        e.preventDefault()
+        setError()
+        if(password !== confPass){
+            setError('Password does not match')
+        } else {        
+        await register(email, password).then((res) => {
+            navigate('/')
+        }).catch((err) => {
+            setError(err.toString())
+        })
+    }
+    }
+
+
 return (    
     <MDBContainer className='d-flex align-items-center justify-content-center' >
         <MDBCard style={{width: '600px'}}>
@@ -21,8 +40,13 @@ return (
                     Register
                 </strong>
             </MDBCardTitle>
+            {
+                error && <MDBTypography className='ms-4 me-4' note noteColor='danger'>
+                    <strong>Error: </strong>{error}
+                </MDBTypography>
+            }
             <MDBCardBody>
-                <form>
+                <form onSubmit={handleSubmit}>
                 <MDBInput 
                     value={email}
                         onChange = {(e) => setEmail(e.target.value)}
