@@ -1,8 +1,10 @@
 import React from 'react'
-import { MDBContainer, MDBCard, MDBCardTitle, MDBCardBody, MDBCardFooter, MDBInput, MDBBtn, MDBTypography } from 'mdb-react-ui-kit'
+import { MDBContainer, MDBCard, MDBCardTitle, MDBCardBody, MDBCardFooter, MDBBtn } from 'mdb-react-ui-kit'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const Dashboard = () => {
+    const {user, logout} = useAuth()
 return (
     <MDBContainer className='d-flex align-items-center justify-content-center' >
         <MDBCard style={{width: '600px'}}>
@@ -16,12 +18,16 @@ return (
                 </strong>
             </MDBCardTitle>
             <MDBCardBody>
-                <div>
-                    <img />
-                    <span>
-
+                <div style={{
+                    flexDirection: 'column'
+                }} className='d-flex align-items-center justify-content-center'>
+                    <img className='rounded-circle shadow' width={150} src='https://mbbootstrap.com/img/new/avatar/1.jpg' alt='profile-img' />
+                    <span className='h3 mt-2'>
+                        {
+                            String(user?.email).split('@')[0]
+                        }
                     </span>
-                    <MDBBtn>
+                    <MDBBtn onClick={() => logout()} className='mt-3' outline rounded>
                         Logout
                     </MDBBtn>
                 </div>

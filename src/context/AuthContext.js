@@ -28,7 +28,7 @@ export const AuthProvider = ({children}) => {
 
     //logout
     function logout(){
-        return signOut()
+        return signOut(auth)
     }
 
     //update email

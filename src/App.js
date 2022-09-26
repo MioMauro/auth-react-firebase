@@ -7,6 +7,8 @@ import { Login } from './component/Login'
 import { Register } from './component/Register'
 import PrivateRoute from './component/PrivateRoute';
 import Dashboard from './component/Dashboard';
+import ForgotPassword from './component/ForgotPassword';
+import UpdateProfile from './component/UpdateProfile';
 
 function App() {
   return (
@@ -16,9 +18,15 @@ function App() {
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
 
         <Route path='/' element={<PrivateRoute>
               <Dashboard />
+        </PrivateRoute>}           
+        />
+
+      <Route path='/update-profile' element={<PrivateRoute>
+              <UpdateProfile />
         </PrivateRoute>}           
         />
       </Routes>
