@@ -1,53 +1,54 @@
-import { auth } from "../firebase"
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, updatePassword, updateEmail } from "firebase/auth"
-import { createContext, useContext, useEffect, useState } from "react"
-
+import { createContext, useContext, useEffect, useState } from "react";
+import {auth} from '../firebase'
+import { 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword,
+    updateEmail,
+    updatePassword,
+    sendPasswordResetEmail,
+    signOut,
+} from 'firebase/auth'
 
 export const AuthContext = createContext()
 export const useAuth = () => useContext(AuthContext)
 
-export const AuthProvider = ({children}) => {
+export  const AuthProvider = ({children}) => {
     const [user, setUser] = useState()
     useEffect(() => {
-        const currUser = auth.onAuthStateChanged((autUser) => {
-            setUser(autUser)
+        const currUser = auth.onAuthStateChanged((authUser) => {
+            setUser(authUser)
         })
-
+        //unsubscribe
         return currUser
     }, [])
 
     //signup
-    function register(email, password){
+    function register(email, password) {
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
-    //signin
     function login(email, password){
-        return createUserWithEmailAndPassword(auth, email, password)
+        return signInWithEmailAndPassword(auth, email, password)
     }
 
-    //logout
     function logout(){
         return signOut(auth)
     }
 
-    //update email
-    function updateUserEmail(email){
+    function updateUserEmail(user, email) {
         return updateEmail(user, email)
     }
 
-    //update password
-    function updateUserPassword(password){
+    function updateUserPassword(user, password){
         return updatePassword(user, password)
     }
 
-    //forgot password
     function forgotPassword(email){
         return sendPasswordResetEmail(auth, email)
     }
 
-    return (
-        <AuthContext.Provider value = {{user, login, logout, updateUserEmail, updateUserPassword, register, forgotPassword}} >
+    return(
+        <AuthContext.Provider value={{user, login, logout, updateUserEmail, updateUserPassword, register, forgotPassword}}>
             {children}
         </AuthContext.Provider>
     )
