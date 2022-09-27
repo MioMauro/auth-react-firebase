@@ -32,12 +32,12 @@ export const AuthProvider = ({children}) => {
     }
 
     //update email
-    function updateUserEmail(user, email){
+    function updateUserEmail(email){
         return updateEmail(user, email)
     }
 
     //update password
-    function updateUserPassword(user, password){
+    function updateUserPassword(password){
         return updatePassword(user, password)
     }
 
